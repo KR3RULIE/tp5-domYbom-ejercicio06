@@ -20,27 +20,35 @@
   <body class="text-center">
     <header><h1 class="my-3">Temporizador</h1></header>
     <main>
-      <section class="border rounded bg-dark-subtle p-3 my-5 mx-auto cajaFlexible">
+      <section
+        class="border rounded bg-dark-subtle p-3 my-5 mx-auto cajaFlexible"
+      >
         <form>
           <label class="form-label fw-bold"
             >Agrega el tiempo que necesites</label
           >
           <div class="d-md-flex gap-2 d-sm-block">
             <input
-              type="number"
+              type="text"
               id="minutos"
               class="form-control my-3"
               placeholder="Minutos"
-              min="1"
-              max="59"
+              pattern="\d{1,2}"
+              minlength="1"
+              maxlength="2"
+              inputmode="numeric"
+              required
             />
             <input
-              type="number"
+              type="text"
               id="segundos"
               class="form-control my-3"
               placeholder="Segundos"
-              min="1"
-              max="60"
+              pattern="\d{1,2}"
+              minlength="1"
+              maxlength="2"
+              inputmode="numeric"
+              required
             />
           </div>
           <div>
@@ -55,6 +63,7 @@
           <button
             id="btnIniciar"
             class="btn bg-info border border-light"
+            onclick="iniciar()"
             disabled
           >
             <i class="bi bi-play-fill fs-5"></i>

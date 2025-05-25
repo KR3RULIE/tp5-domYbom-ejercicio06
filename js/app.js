@@ -67,32 +67,77 @@
 const agregarTiempo = (e) => {
   e.preventDefault();
   // necesito los valores de los input
-  const minutos = document.querySelector("#minutos").value;
-  const segundos = document.querySelector("#segundos").value;
+  const minutos = parseInt(document.querySelector("#minutos").value);
+  const segundos = parseInt(document.querySelector("#segundos").value);
+  minutosAgregados = minutos;
+  segundosAgregados = segundos;
   // necesito los <p> donde va a ir los valores
   const p1 = document.querySelector("#Minutos");
   const p2 = document.querySelector("#Segundos");
   // necesito asignar los value a las <P> minuto y segundo
-  if (minutos < 10) {
-    p1.textContent = "0" + minutos;
+  if (minutos == 0 && segundos == 0) {
+    alert("Uno de los valores debe ser mayor a 0");
+  } else if (minutos > 59 && segundos > 60) {
+    alert("Lo numero ingresado deven ser menores o iguales a: 59:60");
   } else {
-    p1.textContent = minutos;
+    if (minutos < 10) {
+      p1.textContent = "0" + minutos;
+    } else if (minutos === 0) {
+      p1.textContent = "00";
+    } else {
+      p1.textContent = minutos;
+    }
+
+    if (segundos < 10) {
+      p2.textContent = ":0" + segundos;
+    } else if (segundos === 0) {
+      p2.textContent = ":00";
+    } else {
+      p2.textContent = ":" + segundos;
+    }
+    // Ahora necesito habilitar los botones del temporizador
+    document.getElementById("btnIniciar").disabled = false;
+    document.getElementById("btnPausar").disabled = false;
+    document.getElementById("btnReiniciar").disabled = false;
+    // luego limpiamos los input
+    formulario.reset();
   }
-  if (segundos < 10) {
-    p2.textContent = ":0" + segundos;
+};
+
+const temporizador = () => {
+  const setMinutos = document.querySelector("#Minutos");
+  const setSegundos = document.querySelector("#Segundos");
+
+  if (minutosAgregados === 0 && segundosAgregados === 0) {
+    console.log("¡Tiempo terminado!");
+    clearInterval(intervalo);
+    return;
+  }
+
+  if (segundosAgregados === 0) {
+    if (minutosAgregados > 0) {
+      minutosAgregados--;
+      segundosAgregados = 59;
+    }
   } else {
-    p2.textContent = ":" + segundos;
+    segundosAgregados--;
   }
-  // Ahora necesito habilitar los botones del temporizador
-  document.getElementById("btnIniciar").disabled = false;
-  document.getElementById("btnPausar").disabled = false;
-  document.getElementById("btnReiniciar").disabled = false;
-  // luego limpiamos los input
-  formulario.reset();
+
+  setMinutos.textContent =
+    minutosAgregados < 10 ? "0" + minutosAgregados : minutosAgregados;
+  setSegundos.textContent =
+    segundosAgregados < 10 ? ":0" + segundosAgregados : ":" + segundosAgregados;
+};
+
+const iniciar = () => {
+  console.log("Desde la funcion iniciar");
+  const control = setInterval(temporizador, 1000);
 };
 
 // Variables
 const formulario = document.querySelector("form");
-
+let minutosAgregados = 0;
+let segundosAgregados = 0;
+let intervalo;
 // Manejador de eventos
 formulario.addEventListener("submit", agregarTiempo);
