@@ -97,8 +97,10 @@ const agregarTiempo = (e) => {
     }
     // Ahora necesito habilitar los botones del temporizador
     document.getElementById("btnIniciar").disabled = false;
-    document.getElementById("btnPausar").disabled = false;
+    document.getElementById("btnPausar").disabled = true;
     document.getElementById("btnReiniciar").disabled = false;
+    document.getElementById("minutos").disabled = true;
+    document.getElementById("segundos").disabled = true;
     // luego limpiamos los input
     formulario.reset();
   }
@@ -109,8 +111,8 @@ const temporizador = () => {
   const setSegundos = document.querySelector("#Segundos");
 
   if (minutosAgregados === 0 && segundosAgregados === 0) {
-    console.log("¡Tiempo terminado!");
-    clearInterval(intervalo);
+    alert("¡Tiempo terminado!");
+    clearInterval(control);
     return;
   }
 
@@ -130,14 +132,36 @@ const temporizador = () => {
 };
 
 const iniciar = () => {
-  console.log("Desde la funcion iniciar");
-  const control = setInterval(temporizador, 1000);
+  control = setInterval(temporizador, 1000);
+  document.getElementById("btnIniciar").disabled = true;
+  document.getElementById("btnPausar").disabled = false;
+};
+
+const pausar = () => {
+  clearInterval(control);
+  document.getElementById("btnIniciar").disabled = false;
+  document.getElementById("btnPausar").disabled = true;
+};
+
+const reiniciar = () => {
+  clearInterval(control);
+  minutosAgregados = 0;
+  segundosAgregados = 0;
+  const reiniciarMinutos = document.querySelector("#Minutos");
+  const reiniciarSegundos = document.querySelector("#Segundos");
+  reiniciarMinutos.textContent = "00";
+  reiniciarSegundos.textContent = ":00";
+  document.getElementById("btnIniciar").disabled = true;
+  document.getElementById("btnPausar").disabled = true;
+  document.getElementById("btnReiniciar").disabled = true;
+  document.getElementById("minutos").disabled = false;
+  document.getElementById("segundos").disabled = false;
 };
 
 // Variables
 const formulario = document.querySelector("form");
 let minutosAgregados = 0;
 let segundosAgregados = 0;
-let intervalo;
+let control;
 // Manejador de eventos
 formulario.addEventListener("submit", agregarTiempo);
