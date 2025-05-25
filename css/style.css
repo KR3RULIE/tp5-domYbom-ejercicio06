@@ -7,3 +7,13 @@ body {
 main {
   flex-grow: 1;
 }
+
+.cajaFlexible {
+  width: 70%;
+}
+
+@media (min-width: 768px) {
+  .cajaFlexible {
+    width: 40%;
+  }
+}
